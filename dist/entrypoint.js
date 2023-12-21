@@ -196,13 +196,22 @@
         { owner, repo, number },
       ) => {
         const query = `query pullRequestAndLabels($owner: String!, $repo: String!, $number: Int!) {
-      repository(owner:$owner, name:$repo) {
-        pullRequest(number:$number) {
-          id
-          baseRefOid
-          headRefOid
-          baseRefName
-          headRefName
+        repository(owner:$owner, name:$repo) {
+          pullRequest(number:$number) {
+            id
+            baseRefOid
+            headRefOid
+            baseRefName
+            headRefName
+            labels(first: 100) {
+              edges {
+                node {
+                  id
+                  name
+                }
+              }
+            }
+          }
           labels(first: 100) {
             edges {
               node {
@@ -212,22 +221,13 @@
             }
           }
         }
-        labels(first: 100) {
-          edges {
-            node {
-              id
-              name
-            }
-          }
+        rateLimit {
+          limit
+          cost
+          remaining
+          resetAt
         }
-      }
-      rateLimit {
-        limit
-        cost
-        remaining
-        resetAt
-      }
-    }`;
+      }`;
         return graphqlWithAuth(query, {
           owner,
           repo,
@@ -240,11 +240,11 @@
         { labelIds, labelableId },
       ) => {
         const query = `
-      mutation addLabelsToLabelable($labelIds: [ID!]!, $labelableId: ID!) {
-        addLabelsToLabelable(input: {labelIds:$labelIds, labelableId:$labelableId}) {
-          clientMutationId
-        }
-      }`;
+        mutation addLabelsToLabelable($labelIds: [ID!]!, $labelableId: ID!) {
+          addLabelsToLabelable(input: {labelIds:$labelIds, labelableId:$labelableId}) {
+            clientMutationId
+          }
+        }`;
         return graphqlWithAuth(query, {
           labelIds,
           labelableId,
@@ -256,11 +256,11 @@
         { labelIds, labelableId },
       ) => {
         const query = `
-      mutation removeLabelsFromLabelable($labelIds: [ID!]!, $labelableId: ID!) {
-        removeLabelsFromLabelable(input: {labelIds:$labelIds, labelableId:$labelableId}) {
-          clientMutationId
-        }
-      }`;
+        mutation removeLabelsFromLabelable($labelIds: [ID!]!, $labelableId: ID!) {
+          removeLabelsFromLabelable(input: {labelIds:$labelIds, labelableId:$labelableId}) {
+            clientMutationId
+          }
+        }`;
         return graphqlWithAuth(query, {
           labelIds,
           labelableId,
