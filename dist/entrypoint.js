@@ -72,6 +72,7 @@ async function run() {
         const { headRefOid, baseRefOid } = result.repository.pullRequest;
         const { stdout } = await exec(`git fetch && git merge-base --is-ancestor ${baseRefOid} ${headRefOid} && git diff --name-only ${baseRefOid} || git diff --name-only $(git merge-base ${baseRefOid} ${headRefOid})`);
         const diffFiles = stdout.trim().split('\n');
+        util_1.logger.debug('command', `git fetch && git merge-base --is-ancestor ${baseRefOid} ${headRefOid} && git diff --name-only ${baseRefOid} || git diff --name-only $(git merge-base ${baseRefOid} ${headRefOid})`);
         util_1.logger.debug('diffFiles', diffFiles);
         const newLabelNames = new Set(diffFiles.reduce((acc, file) => {
             Object.entries(config.rules).forEach(([label, pattern]) => {
