@@ -72,6 +72,7 @@ async function run() {
         const { headRefOid, baseRefOid } = result.repository.pullRequest;
         const { stdout } = await exec(`git fetch && git merge-base --is-ancestor ${baseRefOid} ${headRefOid} && git diff --name-only ${baseRefOid} || git diff --name-only $(git merge-base ${baseRefOid} ${headRefOid})`);
         const diffFiles = stdout.trim().split('\n');
+        util_1.logger.debug('diffFiles', diffFiles);
         const newLabelNames = new Set(diffFiles.reduce((acc, file) => {
             Object.entries(config.rules).forEach(([label, pattern]) => {
                 if (ignore_1.default()
@@ -131,6 +132,7 @@ ___scope___.file("util.js", function(exports, require, module, __filename, __dir
 
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.logger = exports.getLabelIds = void 0;
 const tslib_1 = require("tslib");
 const core = tslib_1.__importStar(require("@actions/core"));
 const lodash_pick_1 = tslib_1.__importDefault(require("lodash.pick"));
@@ -149,6 +151,7 @@ ___scope___.file("query.js", function(exports, require, module, __filename, __di
 
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.removeLabelsFromLabelable = exports.addLabelsToLabelable = exports.getPullRequestAndLabels = void 0;
 exports.getPullRequestAndLabels = (graphqlWithAuth, { owner, repo, number, }) => {
     const query = `query pullRequestAndLabels($owner: String!, $repo: String!, $number: Int!) {
     repository(owner:$owner, name:$repo) {

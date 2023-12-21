@@ -103,6 +103,8 @@ async function run() {
 
     const diffFiles = stdout.trim().split('\n');
 
+    logger.debug('diffFiles', diffFiles);
+
     const newLabelNames = new Set(
       diffFiles.reduce((acc: LabelName[], file: string) => {
         Object.entries(config.rules).forEach(([label, pattern]) => {
