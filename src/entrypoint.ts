@@ -103,6 +103,10 @@ async function run() {
 
     const diffFiles = stdout.trim().split('\n');
 
+    logger.debug(
+      'command',
+      `git fetch && git merge-base --is-ancestor ${baseRefOid} ${headRefOid} && git diff --name-only ${baseRefOid} || git diff --name-only $(git merge-base ${baseRefOid} ${headRefOid})`,
+    );
     logger.debug('diffFiles', diffFiles);
 
     const newLabelNames = new Set(
