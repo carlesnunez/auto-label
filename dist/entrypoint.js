@@ -69,7 +69,7 @@ async function run() {
         util_1.logger.debug('allLabels', allLabels);
         const currentLabelNames = new Set(result.repository.pullRequest.labels.edges.map((edge) => edge.node.name));
         util_1.logger.debug('currentLabelNames', Array.from(currentLabelNames));
-        const { headRefOid, baseRefOidm, headRefName, baseRefName, } = result.repository.pullRequest;
+        const { headRefOid, baseRefOid, headRefName, baseRefName, } = result.repository.pullRequest;
         util_1.logger.debug('headRefName--->', headRefName);
         util_1.logger.debug('baseRefName--->', baseRefName);
         const { stdout } = await exec(`git fetch && git merge-base --is-ancestor ${baseRefOid} ${headRefOid} && git diff --name-only ${baseRefOid} || git diff --name-only $(git merge-base ${baseRefOid} ${headRefOid})`);

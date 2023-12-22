@@ -97,7 +97,7 @@ async function run() {
 
     const {
       headRefOid,
-      baseRefOidm,
+      baseRefOid,
       headRefName,
       baseRefName,
     } = result.repository.pullRequest;
